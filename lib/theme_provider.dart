@@ -41,7 +41,7 @@ class MyThemes {
       fontFamily: comfortaa,
       brightness: Brightness.light,
       primaryColor: Colors.black,
-      primaryColorDark: Colors.red,
+      primaryColorDark: Colors.redAccent,
       textTheme: const TextTheme(bodyText1: TextStyle(color: Colors.black)),
       dividerTheme: const DividerThemeData(color: Colors.black),
       iconTheme: IconThemeData(color: Colors.grey.shade500));

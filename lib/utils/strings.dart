@@ -1,8 +1,8 @@
 const String logoName="Do It";
 //home page
-const addListText='Add List';
-const titleOneText='Tasks ';
-const titleTwoText='List';
+const addList='Add List';
+const tasks='Tasks ';
+const list='List';
 //add_todo page
 const String collectionTitle='Enter Task Title';
 const String taskTitleError='Task title should not be empty';
@@ -19,9 +19,9 @@ const String editDialogTitle='Edit Task';
 //add task Dialog
 const String addDialogTitle='Add Task';
 //
-const String cancelText='Cancel';
-const String editText='Edit';
-const String addText='Add';
+const String cancel='Cancel';
+const String edit='Edit';
+const String add='Add';
 //
 const preferenceKey='darkTheme';
 const setting= "Settings";

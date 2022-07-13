@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:to_do_list/database/db_helper.dart';
 import 'package:to_do_list/database/task.dart';
+import 'package:to_do_list/utils/colors.dart';
 
 import 'package:to_do_list/utils/strings.dart';
 import 'package:to_do_list/utils/text_styles.dart';
 
 import '../../widgets/alert_dialog.dart';
-//TODO:COLOR CHANGE ONLY ON TICK, ALL RED CHANGE TO ACCENT RED
-
+//TODO:COLOR CHANGE ONLY ON TICK
 // ignore: must_be_immutable
 class TaskList extends StatefulWidget {
   String cName = "";
@@ -29,14 +29,14 @@ class TaskList extends StatefulWidget {
 }
 
 class _TaskListState extends State<TaskList> {
-  final DatabaseHelper _instance = DatabaseHelper();
   TextEditingController editTextController = TextEditingController();
   bool editValidate = false;
+
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Task>>(
-        future: _instance.taskQuery(widget.cId),
+        future: DatabaseHelper.instance.taskQuery(widget.cId),
         builder: (context, snapshot) {
           return ListView.builder(
               itemCount: snapshot.data?.length ?? 0,
@@ -48,11 +48,7 @@ class _TaskListState extends State<TaskList> {
                     ),
                     child: InkWell(
                         onTap: () {
-                          if (task.isCompleted == 0) {
-                            _instance.taskUpdate(task, 1);
-                          } else {
-                            _instance.taskUpdate(task, 0);
-                          }
+                          task.isCompleted==1? DatabaseHelper.instance.taskUpdate(task, 0): DatabaseHelper.instance.taskUpdate(task, 1);
                           widget.progress();
                         },
                         child: Column(
@@ -66,7 +62,7 @@ class _TaskListState extends State<TaskList> {
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5.0),
                                     ),
-                                    checkColor: Colors.red,
+                                    checkColor: Colors.redAccent,
                                     fillColor: MaterialStateProperty.all(
                                         Colors.transparent),
                                     side: MaterialStateBorderSide.resolveWith(
@@ -77,9 +73,9 @@ class _TaskListState extends State<TaskList> {
                                     value: (task.isCompleted == 1),
                                     onChanged: (value) {
                                       if (task.isCompleted == 0) {
-                                        _instance.taskUpdate(task, 1);
+                                        DatabaseHelper.instance.taskUpdate(task, 1);
                                       } else {
-                                        _instance.taskUpdate(task, 0);
+                                        DatabaseHelper.instance.taskUpdate(task, 0);
                                       }
                                       widget.progress();
                                     }),
@@ -87,13 +83,13 @@ class _TaskListState extends State<TaskList> {
                                     child: Text(
                                   task.name,
                                   style: task.isCompleted == 1
-                                      ? updateListCompletedTaskStyle
+                                      ?  updateListCompletedTaskStyle
                                       : updateListTaskStyle,
                                 )),
                                 Visibility(
                                     visible: widget.isEdit,
                                     child: InkWell(
-                                        onTap: () => edit(task),
+                                        onTap: () => onEditTask(task),
                                         child: Icon(
                                           Icons.mode_edit_outlined,
                                           color: Theme.of(context)
@@ -106,9 +102,9 @@ class _TaskListState extends State<TaskList> {
                                   visible: widget.isEdit,
                                   child: InkWell(
                                     onTap: () async {
-                                      await _instance.taskDelete(task.id!);
+                                      await DatabaseHelper.instance.taskDelete(task.id!);
                                       int? length =
-                                          await _instance.countTask(widget.cId);
+                                          await DatabaseHelper.instance.countTask(widget.cId);
                                       setState(() {
                                         if (length == 0) {
                                           widget.isEdit = false;
@@ -145,15 +141,15 @@ class _TaskListState extends State<TaskList> {
         });
   }
 
-  void edit(Task task) {
+  void onEditTask(Task task) {
     editTextController.text = task.name;
     showDialog<String?>(
         context: context,
         builder: (context) => AlertDialogBox(
               controller: editTextController,
               isValidateStatus: editValidate,
-              positiveResponse: editText,
-              negativeResponse: cancelText,
+              positiveResponse: edit,
+              negativeResponse: cancel,
               isTextFieldRequired: true,
               isValidateRequired: true,
               title: editDialogTitle,
@@ -161,7 +157,7 @@ class _TaskListState extends State<TaskList> {
                 if (editTextController.text.trim().isEmpty) {
                   return;
                 }
-                _instance.taskEdit(
+                DatabaseHelper.instance.taskEdit(
                     task, editTextController.text.trim().toString());
                 Navigator.of(context).pop();
                 setState(() {});

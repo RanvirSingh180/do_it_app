@@ -12,7 +12,7 @@ TextStyle homeListCompletedTaskStyle = const TextStyle(
     color: Colors.white,
     fontSize: 10,
     decoration: TextDecoration.lineThrough,
-    decorationColor: Colors.red,
+    decorationColor: Colors.redAccent,
     decorationStyle: TextDecorationStyle.solid,decorationThickness: 2,
     fontWeight: FontWeight.bold);
 
@@ -31,7 +31,7 @@ TextStyle updateListTaskStyle = const TextStyle(
 TextStyle updateListCompletedTaskStyle = const TextStyle(
     fontSize: 17,
     decoration: TextDecoration.lineThrough,
-    decorationColor: Colors.red,
+    decorationColor: Colors.redAccent,
     decorationStyle: TextDecorationStyle.solid,decorationThickness: 2,
     fontWeight: FontWeight.bold);
 

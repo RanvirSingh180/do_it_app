@@ -13,12 +13,13 @@ import 'package:to_do_list/widgets/alert_dialog.dart';
 
 
 
-//ignore: must_be_immutable
-class TaskDetailPage extends StatefulWidget {
-  String cName = "";
-  int cId = 0;
 
-  TaskDetailPage({Key? key, required this.cId, required this.cName})
+class TaskDetailPage extends StatefulWidget {
+ final String collectionName ;
+  final int collectionId ;
+  final int collectionColor;
+
+  const TaskDetailPage({Key? key, required this.collectionId, required this.collectionName,required this.collectionColor})
       : super(key: key);
 
   @override
@@ -40,7 +41,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
 
   @override
   void initState() {
-    editCollectionTextController.text = widget.cName;
+    editCollectionTextController.text = widget.collectionName;
     progress();
     super.initState();
   }
@@ -80,12 +81,12 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                             ),
                             Expanded(
                                 child: Text(
-                              widget.cName,
-                              style: const TextStyle(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.w900,
-                                  fontFamily: comfortaa),
-                            )),
+                                  editCollectionTextController.text,
+                                  style: const TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.w900,
+                                      fontFamily: comfortaa),
+                                )),
                             InkWell(
                                 child: Visibility(
                                   visible: isEditVisible,
@@ -99,14 +100,14 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                                       context: context,
                                       builder: (BuildContext context) =>
                                           AlertDialogBox(
-                                              positiveResponse: editText,
-                                              negativeResponse: cancelText,
+                                              positiveResponse: edit,
+                                              negativeResponse: cancel,
                                               isValidateStatus: false,
                                               title: editCollectionTitle,
                                               isTextFieldRequired: true,
                                               isValidateRequired: true,
                                               controller:
-                                                  editCollectionTextController,
+                                              editCollectionTextController,
                                               positiveCallback: () {
                                                 if (editCollectionTextController
                                                     .text
@@ -115,7 +116,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                                                   return;
                                                 }
                                                 _instance.collectionUpdate(
-                                                    widget.cId,
+                                                    widget.collectionId,
                                                     editCollectionTextController
                                                         .text
                                                         .trim()
@@ -134,9 +135,9 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                                     builder: (BuildContext context) =>
                                         AlertDialogBox(
                                             positiveResponse:
-                                                yes,
+                                            yes,
                                             negativeResponse:
-                                                no,
+                                            no,
                                             isValidateStatus: false,
                                             title: deleteCollectionTitle,
                                             isTextFieldRequired: false,
@@ -144,9 +145,9 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                                             positiveCallback: () {
                                               setState(() {
                                                 _instance.taskCollectionDelete(
-                                                    widget.cId);
+                                                    widget.collectionId);
                                                 _instance.collectionDelete(
-                                                    widget.cId);
+                                                    widget.collectionId);
                                               });
                                               Navigator.of(context).pop();
                                               Navigator.of(context).pop();
@@ -176,7 +177,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                             CircularPercentIndicator(
                               radius: 10,
                               backgroundColor: Colors.grey.shade500,
-                              progressColor: Colors.red,
+                              progressColor: Colors.redAccent,
                               percent: tasks == 0 ? 0 : taskPercentCompleted,
                               lineWidth: 3,
                               animation: true,
@@ -218,21 +219,21 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                         ),
                         Expanded(
                             child: Divider(
-                          thickness: 1,
-                          color: Colors.grey.shade400,
-                        ))
+                              thickness: 1,
+                              color: Colors.grey.shade400,
+                            ))
                       ]),
                       const SizedBox(
                         height: 10,
                       ),
                       Expanded(
                           child: FutureBuilder<List<Task>>(
-                              future: _instance.taskQuery(widget.cId),
+                              future: _instance.taskQuery(widget.collectionId),
                               builder: (context, snapshot) {
                                 return TaskList(
-                                  isEdit: isEditVisible ,
-                                    cId: widget.cId,
-                                    cName: widget.cName,
+                                    isEdit: isEditVisible ,
+                                    cId: widget.collectionId,
+                                    cName: widget.collectionName,
                                     progress: progress);
                               }))
                     ]))),
@@ -247,7 +248,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
             children: [
               SpeedDialChild(
                 onTap: () {
-                  add();
+                  onAdd();
                 },
                 child: const Icon(
                   Icons.add,
@@ -257,6 +258,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
               SpeedDialChild(
                   onTap: () {
                     setState(() {
+                      defaultCollectionColor=Color(widget.collectionColor);
                       isEditVisible = true;
                     });
                   },
@@ -269,14 +271,14 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
     Navigator.pop(context);
   }
 
-  void add() {
+  void onAdd () {
     showDialog<String?>(
         context: context,
         builder: (context) => AlertDialogBox(
             controller: addTextController,
             isValidateStatus: addValidate,
-            positiveResponse: addText,
-            negativeResponse: cancelText,
+            positiveResponse: add,
+            negativeResponse: cancel,
             title: addDialogTitle,
             isValidateRequired: true,
             isTextFieldRequired: true,
@@ -288,7 +290,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                 _instance.taskInsert(Task(
                     date: timestamp,
                     name: addTextController.text.trim().toString(),
-                    collectionId: widget.cId,
+                    collectionId: widget.collectionId,
                     isCompleted: 0));
                 addTextController.text = '';
                 progress();
@@ -298,8 +300,8 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
   }
 
   void progress() async {
-    tasks = await _instance.countTask(widget.cId);
-    completedTask = await _instance.countCompletedTask(widget.cId);
+    tasks = await _instance.countTask(widget.collectionId);
+    completedTask = await _instance.countCompletedTask(widget.collectionId);
     double? completed = (completedTask! / tasks!);
     setState(() {
       taskPercentCompleted = completed;
@@ -311,9 +313,8 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
   openColorDialog() => showDialog(
       context: context,
       builder: (context) => ColorPickerDialog(colorUpdate: () {
-            setState(() {
-              defaultCollectionColor;
-            });
-            _instance.collectionColorUpdate(widget.cId, defaultCollectionColor.value);
-          }));
+        setState(() {
+          defaultCollectionColor;
+        });
+      }));
 }

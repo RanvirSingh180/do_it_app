@@ -5,6 +5,7 @@ import 'package:to_do_list/utils/fonts.dart';
 // ignore: must_be_immutable
 class ColorPickerDialog extends StatefulWidget {
   VoidCallback colorUpdate;
+
   ColorPickerDialog({Key? key,required this.colorUpdate}) : super(key: key);
   @override
   State<ColorPickerDialog> createState() => _ColorPickerDialogState();

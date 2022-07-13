@@ -188,4 +188,13 @@ CREATE TABLE $taskTable(
       whereArgs: [collectionId],
     );
   }
+
+  Future<int?> listColor(int collectionId) async {
+    Database db = await instance.database;
+    var x = await db.rawQuery(
+        'SELECT $collectionColor from $collectionTable WHERE $collectionId=?',
+        [collectionId]);
+    int? color = Sqflite.firstIntValue(x);
+    return color;
+  }
 }

@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:to_do_list/utils/fonts.dart';
 import 'package:to_do_list/utils/strings.dart';
 
-// ignore: must_be_immutable
+
 class AlertDialogBox extends StatefulWidget {
   TextEditingController? controller;
-
   bool? isValidateStatus;
   String positiveResponse;
   String negativeResponse;
@@ -16,14 +15,14 @@ class AlertDialogBox extends StatefulWidget {
 
   AlertDialogBox(
       {Key? key,
-  this.controller, this.isValidateStatus,
+      this.controller,
+      this.isValidateStatus,
       required this.positiveResponse,
       required this.negativeResponse,
-        this.title=logoName,
-        required this.isTextFieldRequired,
-        required this.isValidateRequired,
-        required this.positiveCallback
-        })
+      this.title = logoName,
+      required this.isTextFieldRequired,
+      required this.isValidateRequired,
+      required this.positiveCallback})
       : super(key: key);
 
   @override
@@ -35,7 +34,7 @@ class _AlertDialogBoxState extends State<AlertDialogBox> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title:Text(
+      title: Text(
         widget.title,
         style: const TextStyle(fontFamily: comfortaa),
       ),
@@ -50,19 +49,20 @@ class _AlertDialogBoxState extends State<AlertDialogBox> {
             autofocus: true,
             validator: (text) => text?.isEmpty ?? false ? 'Error' : null,
             maxLength: 20,
-
             decoration: InputDecoration(
-              focusColor:  Theme.of(context).primaryColorDark,
-                hintText:widget.title,
+                focusColor: Theme.of(context).primaryColorDark,
+                hintText: widget.title,
                 hintStyle: const TextStyle(fontFamily: comfortaa),
-                errorText: widget.isValidateStatus! ? 'Value can\'t be empty' : null,
-                errorStyle: TextStyle(color: Theme.of(context).primaryColorDark),
+                errorText:
+                    widget.isValidateStatus! ? 'Value can\'t be empty' : null,
+                errorStyle:
+                    TextStyle(color: Theme.of(context).primaryColorDark),
                 focusedErrorBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color:Theme.of(context).primaryColorDark)),
-                focusedBorder:  UnderlineInputBorder(
-                    borderSide: BorderSide(color: Theme.of(context).primaryColorLight)
-
-                )),
+                    borderSide:
+                        BorderSide(color: Theme.of(context).primaryColorDark)),
+                focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                        color: Theme.of(context).primaryColorLight))),
             controller: widget.controller,
           ),
         );
@@ -70,26 +70,26 @@ class _AlertDialogBoxState extends State<AlertDialogBox> {
       actions: [
         TextButton(
             onPressed: () {
-              if(widget.isValidateRequired==true) {
+              if (widget.isValidateRequired == true) {
                 stateSetter(() {
-                widget.controller!.text.trim().isEmpty
-                    ? widget.isValidateStatus = true
-                    : widget.isValidateStatus = false;
-              });
+                  widget.controller!.text.trim().isEmpty
+                      ? widget.isValidateStatus = true
+                      : widget.isValidateStatus = false;
+                });
               }
               widget.positiveCallback.call();
-
             },
             child: Text(widget.positiveResponse,
-                style:  TextStyle(
-                    color:Theme.of(context).primaryColor, fontFamily: comfortaa))),
+                style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                    fontFamily: comfortaa))),
         TextButton(
             onPressed: () {
               Navigator.pop(context);
             },
             child: Text(widget.negativeResponse,
-                style:  TextStyle(
-                    color:Theme.of(context).primaryColor,
+                style: TextStyle(
+                    color: Theme.of(context).primaryColor,
                     fontWeight: FontWeight.w300,
                     fontFamily: comfortaa)))
       ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:to_do_list/ui/add_todo/add_todo_page.dart';
 import 'package:to_do_list/utils/fonts.dart';
+import 'package:to_do_list/utils/global_variables.dart';
 import 'package:to_do_list/utils/strings.dart';
 import 'package:to_do_list/ui/home/home_page_list.dart';
 
@@ -13,17 +14,10 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 }
-int? collectionId = 0;
 
 class _HomePageState extends State<HomePage> {
   int selectedId = 1;
-  @override
-  void didUpdateWidget(covariant HomePage oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if(widget!=oldWidget) {
-    }}
-  @override
-
+@override
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
@@ -36,63 +30,41 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(
               height: 90,
             ),
-            Row(children: <Widget>[
+            Row(children: const <Widget>[
               Expanded(
-                child: Container(
-                    margin: const EdgeInsets.only(right: 50.0),
-                    child: const Divider(
-                      color: Colors.grey,
-                      height: 15,
-                      thickness: 1.2,
-                    )),
+                child: Divider(
+                  color: Colors.grey,
+                  height: 15,
+                  thickness: 1.2,
+                ),
               ),
-              const Text(
-                titleOneText,
+              SizedBox(width: 40),
+              Text(
+                tasks,
                 style: TextStyle(
                     fontSize: 30,
-                    fontFamily: comfortaa,
                     fontWeight: FontWeight.w900),
               ),
-              const Text(
-                titleTwoText,
+              Text(
+                list,
                 style: TextStyle(
                     fontSize: 30,
                     color: Colors.grey,
-                    fontFamily: comfortaa,
                     fontWeight: FontWeight.normal),
               ),
+
+              SizedBox(width: 40),
               Expanded(
-                child: Container(
-                    margin: const EdgeInsets.only(left: 50.0),
-                    child: const Divider(
-                      color: Colors.grey,
-                      height: 15,
-                      thickness: 1.2,
-                    )),
+                child: Divider(
+                  color: Colors.grey,
+                  height: 15,
+                  thickness: 1.2,
+                ),
               ),
             ]),
             const SizedBox(height: 40),
             Center(
-                child: InkWell(onTap: () async {
-
-                  var isRefresh=await Navigator.push(
-                      context,
-                      PageTransition(
-                          type: PageTransitionType.fade,
-                          child: const AddToDoPage(),
-                          duration: const Duration(milliseconds: 500),
-                          inheritTheme: true,
-                          ctx: context
-                      ));
-                  Future.delayed(const Duration(milliseconds: 50), () {
-                    scrollController.jumpTo(scrollController.position.maxScrollExtent);
-                  });
-
-                  if (isRefresh!=null && isRefresh ) {
-                    setState(() {});
-
-                  }
-                },
+                child: InkWell(onTap:()=>onListAdd(),
                   child: Container(
                     width: 40,
                     height: 40,
@@ -106,7 +78,7 @@ class _HomePageState extends State<HomePage> {
               height: 20,
             ),
             const Center(
-                child: Text(addListText,
+                child: Text(addList,
                     style:
                     TextStyle(color: Colors.grey, fontFamily: comfortaa))),
             const SizedBox(
@@ -128,6 +100,26 @@ class _HomePageState extends State<HomePage> {
       ),
         ),
     );
+  }
+  void onListAdd()async {
+
+    var isRefresh=await Navigator.push(
+        context,
+        PageTransition(
+            type: PageTransitionType.fade,
+            child: const AddToDoPage(),
+            duration: const Duration(milliseconds: 500),
+            inheritTheme: true,
+            ctx: context
+        ));
+    Future.delayed(const Duration(milliseconds: 50), () {
+      scrollController.jumpTo(scrollController.position.maxScrollExtent);
+    });
+
+    if (isRefresh!=null && isRefresh ) {
+      setState(() {});
+
+    }
   }
   void pop() {
     Navigator.pop(context, true);

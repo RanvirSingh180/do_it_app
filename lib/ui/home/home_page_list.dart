@@ -6,9 +6,9 @@ import 'package:to_do_list/database/db_helper.dart';
 import 'package:to_do_list/database/task.dart';
 import 'package:to_do_list/ui/task_detail/task_detail_page.dart';
 import 'package:to_do_list/utils/fonts.dart';
+import 'package:to_do_list/utils/global_variables.dart';
 import 'package:to_do_list/utils/text_styles.dart';
-ScrollController scrollController = ScrollController();
-int? collectionId = 0;
+
 class HomePageList extends StatefulWidget {
   const HomePageList({Key? key}) : super(key: key);
 
@@ -17,7 +17,7 @@ class HomePageList extends StatefulWidget {
 }
 
 class _HomePageListState extends State<HomePageList> {
-  final DatabaseHelper _instance = DatabaseHelper();
+  int? collectionId = 0;
 
 @override
   void initState() {
@@ -29,7 +29,7 @@ class _HomePageListState extends State<HomePageList> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Collection>>(
-      future: _instance.getCollectionList(),
+      future: DatabaseHelper.instance.getCollectionList(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -47,29 +47,12 @@ class _HomePageListState extends State<HomePageList> {
               return Padding(
                 padding: const EdgeInsets.only(right: 8.0, bottom: 20),
                 child: InkWell(
-                  onTap: () async {
-                    await Navigator.push(
-                      context,
-                      PageTransition(
-                          type: PageTransitionType.fade,
-                          child:  TaskDetailPage(
-                            cId: collection.id!,
-                            cName: collection.name,),
-                          duration: const Duration(milliseconds: 500),
-                          inheritTheme: true,
-                          ctx: context),
-                    );
-                    Future.delayed(const Duration(milliseconds: 50), () {
-                      scrollController.jumpTo(scrollController.position.maxScrollExtent);
-                    });
+                  onTap: ()=>onTaskList(collection.id!, collection.name ,collection.color),
 
-                    setState(() {});
-                  },
                   child: Container(
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
                           color: Color(collection.color)
-                          //  Color(collection.color)
                           ),
                       width: 170,
                       padding: const EdgeInsets.only(
@@ -92,7 +75,7 @@ class _HomePageListState extends State<HomePageList> {
                           ),
                           Expanded(
                             child:FutureBuilder<List<Task>>(
-                              future: _instance.taskQuery(collection.id),
+                              future: DatabaseHelper.instance.taskQuery(collection.id),
 
                               builder: (context, snapshot) {
                                 if (snapshot.connectionState ==
@@ -137,8 +120,8 @@ class _HomePageListState extends State<HomePageList> {
                                                   child: Text(
                                                     task.name,
                                                     style: task.isCompleted == 1
-                                                        ? homeListCompletedTaskStyle
-                                                        : homeTaskListStyle,
+                                                        ?homeListCompletedTaskStyle
+                                                        :homeTaskListStyle,
                                                   ),
                                                 ),
                                               ],
@@ -162,4 +145,24 @@ class _HomePageListState extends State<HomePageList> {
       },
     );
   }
+void onTaskList(int collectionId,String collectionName,int collectionColor)async{
+  await Navigator.push(
+    context,
+    PageTransition(
+        type: PageTransitionType.fade,
+        child:  TaskDetailPage(
+          collectionColor: collectionColor,
+          collectionId: collectionId,
+          collectionName: collectionName,),
+        duration: const Duration(milliseconds: 500),
+        inheritTheme: true,
+        ctx: context),
+  );
+  Future.delayed(const Duration(milliseconds: 50), () {
+    scrollController.jumpTo(scrollController.position.maxScrollExtent);
+  });
+
+  setState(() {});
 }
+}
+

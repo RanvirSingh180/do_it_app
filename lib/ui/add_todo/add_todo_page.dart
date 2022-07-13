@@ -4,13 +4,13 @@ import 'package:to_do_list/database/collection.dart';
 import 'package:to_do_list/database/db_helper.dart';
 import 'package:to_do_list/database/task.dart';
 import 'package:to_do_list/utils/colors.dart';
+import 'package:to_do_list/utils/global_variables.dart';
 import 'package:to_do_list/utils/strings.dart';
 import 'package:to_do_list/widgets/alert_dialog.dart';
 import 'package:to_do_list/widgets/app_header.dart';
 import 'package:to_do_list/utils/fonts.dart';
 import 'package:to_do_list/utils/text_styles.dart';
 import 'package:to_do_list/widgets/color_picker_dialog.dart';
-import 'package:to_do_list/ui/home/home_page_list.dart';
 
 
 class AddToDoPage extends StatefulWidget {
@@ -46,7 +46,6 @@ class _AddToDoPageState extends State<AddToDoPage> {
 
   @override
   Widget build(BuildContext context) {
-    //willscope
     return Scaffold(
         body: SafeArea(
             child: Padding(
@@ -128,7 +127,7 @@ class _AddToDoPageState extends State<AddToDoPage> {
                                             ),
                                             const Spacer(),
                                             InkWell(
-                                              onTap: () => edit(index),
+                                              onTap: () => onEdit(index),
                                               child: Icon(
                                                 Icons.mode_edit_outlined,
                                                 color: Theme.of(context)
@@ -202,8 +201,8 @@ class _AddToDoPageState extends State<AddToDoPage> {
       builder: (context) => AlertDialogBox(
           controller: taskController,
           isValidateStatus: isAddTaskValidate,
-          positiveResponse: addText,
-          negativeResponse: cancelText,
+          positiveResponse: add,
+          negativeResponse: cancel,
           isValidateRequired: true,
           title: addDialogTitle,
           isTextFieldRequired: true,
@@ -217,15 +216,15 @@ class _AddToDoPageState extends State<AddToDoPage> {
             }
           }));
 
-  void edit(int index) {
+  void onEdit(int index) {
     taskController.text = tasks[index].toString();
     showDialog<String?>(
         context: context,
         builder: (context) => AlertDialogBox(
             controller: taskController,
             isValidateStatus: isEditValidate,
-            positiveResponse: editText,
-            negativeResponse: cancelText,
+            positiveResponse: edit,
+            negativeResponse: cancel,
             isValidateRequired: true,
             title: editDialogTitle,
             isTextFieldRequired: true,

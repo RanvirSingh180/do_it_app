@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:to_do_list/ui/home/home_page.dart';
 import 'package:to_do_list/ui/settings/setting_page.dart';
 import 'package:to_do_list/utils/colors.dart';
-import 'package:to_do_list/ui/home/home_page_list.dart';
+import 'package:to_do_list/utils/global_variables.dart';
 
 
 
