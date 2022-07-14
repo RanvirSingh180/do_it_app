@@ -14,12 +14,13 @@ import 'package:to_do_list/widgets/alert_dialog.dart';
 
 
 
+// ignore: must_be_immutable
 class TaskDetailPage extends StatefulWidget {
  final String collectionName ;
   final int collectionId ;
-  final int collectionColor;
+  late int collectionColor;
 
-  const TaskDetailPage({Key? key, required this.collectionId, required this.collectionName,required this.collectionColor})
+   TaskDetailPage({Key? key, required this.collectionId, required this.collectionName,required this.collectionColor})
       : super(key: key);
 
   @override
@@ -62,7 +63,9 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                             isTickVisible: isEditVisible,
                             onTickPress: () {
                               setState(() {
+                                DatabaseHelper.instance.collectionColorUpdate(widget.collectionId, defaultCollectionColor.value);
                                 isEditVisible = false;
+                                widget.collectionColor =defaultCollectionColor.value;
                               });
                             },
                           )),
