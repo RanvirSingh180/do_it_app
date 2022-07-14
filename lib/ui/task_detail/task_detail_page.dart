@@ -30,7 +30,6 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
   bool isEditVisible = false;
   bool value = false;
   int boxSelected = 0;
-  final DatabaseHelper _instance = DatabaseHelper();
   bool addValidate = false;
   TextEditingController addTextController = TextEditingController();
   TextEditingController editCollectionTextController = TextEditingController();
@@ -100,8 +99,8 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                                       context: context,
                                       builder: (BuildContext context) =>
                                           AlertDialogBox(
-                                              positiveResponse: edit,
-                                              negativeResponse: cancel,
+                                              positiveButtonText: edit,
+                                              negativeButtonText: cancel,
                                               isValidateStatus: false,
                                               title: editCollectionTitle,
                                               isTextFieldRequired: true,
@@ -115,7 +114,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                                                     .isEmpty) {
                                                   return;
                                                 }
-                                                _instance.collectionUpdate(
+                                                DatabaseHelper.instance.collectionUpdate(
                                                     widget.collectionId,
                                                     editCollectionTextController
                                                         .text
@@ -134,9 +133,9 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                                     context: context,
                                     builder: (BuildContext context) =>
                                         AlertDialogBox(
-                                            positiveResponse:
+                                            positiveButtonText:
                                             yes,
-                                            negativeResponse:
+                                            negativeButtonText:
                                             no,
                                             isValidateStatus: false,
                                             title: deleteCollectionTitle,
@@ -144,9 +143,9 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                                             isValidateRequired: false,
                                             positiveCallback: () {
                                               setState(() {
-                                                _instance.taskCollectionDelete(
+                                                DatabaseHelper.instance.taskCollectionDelete(
                                                     widget.collectionId);
-                                                _instance.collectionDelete(
+                                                DatabaseHelper.instance.collectionDelete(
                                                     widget.collectionId);
                                               });
                                               Navigator.of(context).pop();
@@ -228,7 +227,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                       ),
                       Expanded(
                           child: FutureBuilder<List<Task>>(
-                              future: _instance.taskQuery(widget.collectionId),
+                              future: DatabaseHelper.instance.taskQuery(widget.collectionId),
                               builder: (context, snapshot) {
                                 return TaskList(
                                     isEdit: isEditVisible ,
@@ -277,8 +276,8 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
         builder: (context) => AlertDialogBox(
             controller: addTextController,
             isValidateStatus: addValidate,
-            positiveResponse: add,
-            negativeResponse: cancel,
+            positiveButtonText: add,
+            negativeButtonText: cancel,
             title: addDialogTitle,
             isValidateRequired: true,
             isTextFieldRequired: true,
@@ -287,7 +286,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
                 if (addTextController.text.trim().isEmpty) {
                   return;
                 }
-                _instance.taskInsert(Task(
+                DatabaseHelper.instance.taskInsert(Task(
                     date: timestamp,
                     name: addTextController.text.trim().toString(),
                     collectionId: widget.collectionId,
@@ -300,8 +299,8 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
   }
 
   void progress() async {
-    tasks = await _instance.countTask(widget.collectionId);
-    completedTask = await _instance.countCompletedTask(widget.collectionId);
+    tasks = await DatabaseHelper.instance.countTask(widget.collectionId);
+    completedTask = await DatabaseHelper.instance.countCompletedTask(widget.collectionId);
     double? completed = (completedTask! / tasks!);
     setState(() {
       taskPercentCompleted = completed;

@@ -6,7 +6,6 @@ import 'package:to_do_list/database/db_helper.dart';
 import 'package:to_do_list/database/task.dart';
 import 'package:to_do_list/ui/task_detail/task_detail_page.dart';
 import 'package:to_do_list/utils/fonts.dart';
-import 'package:to_do_list/utils/global_variables.dart';
 import 'package:to_do_list/utils/text_styles.dart';
 
 class HomePageList extends StatefulWidget {
@@ -21,9 +20,6 @@ class _HomePageListState extends State<HomePageList> {
 
 @override
   void initState() {
-  Future.delayed(const Duration(milliseconds: 50), () {
-    scrollController.jumpTo(scrollController.position.maxScrollExtent);
-  });
     super.initState();
   }
   @override
@@ -38,7 +34,6 @@ class _HomePageListState extends State<HomePageList> {
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
 
           child: ListView.builder(
-            controller: scrollController,
             scrollDirection: Axis.horizontal,
             itemCount: snapshot.data!.length,
             itemBuilder: (context, index) {
@@ -114,14 +109,14 @@ class _HomePageListState extends State<HomePageList> {
                                                 Text(
                                                   "• ",
                                                   textScaleFactor: 1.5,
-                                                  style: homeTaskListStyle,
+                                                  style: homeTaskTextStyle,
                                                 ),
                                                 Expanded(
                                                   child: Text(
                                                     task.name,
                                                     style: task.isCompleted == 1
-                                                        ?homeListCompletedTaskStyle
-                                                        :homeTaskListStyle,
+                                                        ?homeTaskCompletedTextStyle
+                                                        :homeTaskTextStyle,
                                                   ),
                                                 ),
                                               ],
@@ -158,9 +153,7 @@ void onTaskList(int collectionId,String collectionName,int collectionColor)async
         inheritTheme: true,
         ctx: context),
   );
-  Future.delayed(const Duration(milliseconds: 50), () {
-    scrollController.jumpTo(scrollController.position.maxScrollExtent);
-  });
+
 
   setState(() {});
 }

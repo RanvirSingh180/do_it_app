@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:to_do_list/ui/add_todo/add_todo_page.dart';
 import 'package:to_do_list/utils/fonts.dart';
-import 'package:to_do_list/utils/global_variables.dart';
 import 'package:to_do_list/utils/strings.dart';
 import 'package:to_do_list/ui/home/home_page_list.dart';
 
@@ -112,9 +111,6 @@ class _HomePageState extends State<HomePage> {
             inheritTheme: true,
             ctx: context
         ));
-    Future.delayed(const Duration(milliseconds: 50), () {
-      scrollController.jumpTo(scrollController.position.maxScrollExtent);
-    });
 
     if (isRefresh!=null && isRefresh ) {
       setState(() {});

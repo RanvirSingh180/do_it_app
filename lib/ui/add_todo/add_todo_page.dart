@@ -4,7 +4,6 @@ import 'package:to_do_list/database/collection.dart';
 import 'package:to_do_list/database/db_helper.dart';
 import 'package:to_do_list/database/task.dart';
 import 'package:to_do_list/utils/colors.dart';
-import 'package:to_do_list/utils/global_variables.dart';
 import 'package:to_do_list/utils/strings.dart';
 import 'package:to_do_list/widgets/alert_dialog.dart';
 import 'package:to_do_list/widgets/app_header.dart';
@@ -201,8 +200,8 @@ class _AddToDoPageState extends State<AddToDoPage> {
       builder: (context) => AlertDialogBox(
           controller: taskController,
           isValidateStatus: isAddTaskValidate,
-          positiveResponse: add,
-          negativeResponse: cancel,
+          positiveButtonText: add,
+          negativeButtonText: cancel,
           isValidateRequired: true,
           title: addDialogTitle,
           isTextFieldRequired: true,
@@ -223,8 +222,8 @@ class _AddToDoPageState extends State<AddToDoPage> {
         builder: (context) => AlertDialogBox(
             controller: taskController,
             isValidateStatus: isEditValidate,
-            positiveResponse: edit,
-            negativeResponse: cancel,
+            positiveButtonText: edit,
+            negativeButtonText: cancel,
             isValidateRequired: true,
             title: editDialogTitle,
             isTextFieldRequired: true,
@@ -280,7 +279,6 @@ void onSubmit()async {
   }
 
   void pop() {
-    scrollController.jumpTo(scrollController.position.minScrollExtent);
     Navigator.pop(context, false);
   }
 }

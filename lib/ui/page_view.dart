@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:to_do_list/ui/home/home_page.dart';
 import 'package:to_do_list/ui/settings/setting_page.dart';
 import 'package:to_do_list/utils/colors.dart';
-import 'package:to_do_list/utils/global_variables.dart';
+
 
 
 
@@ -59,10 +59,6 @@ class _PagesState extends State<Pages> with WidgetsBindingObserver {
                           onTap: () {
                             controller.animateToPage(0, duration:const Duration(milliseconds: 500), curve: Curves.decelerate);
                             setState(() {
-                              Future.delayed(const Duration(milliseconds: 50), () {
-                                scrollController.jumpTo(scrollController.position.maxScrollExtent);
-                              });
-
                               selectedId = 1;
                             });
                           },

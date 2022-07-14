@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:to_do_list/database/db_helper.dart';
 import 'package:to_do_list/database/task.dart';
-import 'package:to_do_list/utils/colors.dart';
+
 
 import 'package:to_do_list/utils/strings.dart';
 import 'package:to_do_list/utils/text_styles.dart';
@@ -15,7 +15,6 @@ class TaskList extends StatefulWidget {
   int cId = 0;
   VoidCallback progress;
   bool isEdit;
-
   TaskList(
       {Key? key,
         required this.isEdit,
@@ -83,8 +82,8 @@ class _TaskListState extends State<TaskList> {
                                     child: Text(
                                   task.name,
                                   style: task.isCompleted == 1
-                                      ?  updateListCompletedTaskStyle
-                                      : updateListTaskStyle,
+                                      ?  updateTaskCompletedTextStyle
+                                      : updateTaskTextStyle,
                                 )),
                                 Visibility(
                                     visible: widget.isEdit,
@@ -148,8 +147,8 @@ class _TaskListState extends State<TaskList> {
         builder: (context) => AlertDialogBox(
               controller: editTextController,
               isValidateStatus: editValidate,
-              positiveResponse: edit,
-              negativeResponse: cancel,
+              positiveButtonText: edit,
+              negativeButtonText: cancel,
               isTextFieldRequired: true,
               isValidateRequired: true,
               title: editDialogTitle,

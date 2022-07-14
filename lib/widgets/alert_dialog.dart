@@ -3,11 +3,12 @@ import 'package:to_do_list/utils/fonts.dart';
 import 'package:to_do_list/utils/strings.dart';
 
 
+// ignore: must_be_immutable
 class AlertDialogBox extends StatefulWidget {
   TextEditingController? controller;
   bool? isValidateStatus;
-  String positiveResponse;
-  String negativeResponse;
+  String positiveButtonText;
+  String negativeButtonText;
   String title;
   bool isValidateRequired;
   bool isTextFieldRequired;
@@ -17,8 +18,8 @@ class AlertDialogBox extends StatefulWidget {
       {Key? key,
       this.controller,
       this.isValidateStatus,
-      required this.positiveResponse,
-      required this.negativeResponse,
+      required this.positiveButtonText,
+      required this.negativeButtonText,
       this.title = logoName,
       required this.isTextFieldRequired,
       required this.isValidateRequired,
@@ -79,7 +80,7 @@ class _AlertDialogBoxState extends State<AlertDialogBox> {
               }
               widget.positiveCallback.call();
             },
-            child: Text(widget.positiveResponse,
+            child: Text(widget.positiveButtonText,
                 style: TextStyle(
                     color: Theme.of(context).primaryColor,
                     fontFamily: comfortaa))),
@@ -87,7 +88,7 @@ class _AlertDialogBoxState extends State<AlertDialogBox> {
             onPressed: () {
               Navigator.pop(context);
             },
-            child: Text(widget.negativeResponse,
+            child: Text(widget.negativeButtonText,
                 style: TextStyle(
                     color: Theme.of(context).primaryColor,
                     fontWeight: FontWeight.w300,
